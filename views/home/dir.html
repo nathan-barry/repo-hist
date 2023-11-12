@@ -1,12 +1,12 @@
 <div>
-    {{ range .FileArray }}
+    {{ range .Tree }}
     <button 
         hx-post="/fetch-file" 
         hx-target="#file" 
-        hx-vals='{"raw_url": "{{.RawURL}}", "file_name": "{{.FileName}}"}' 
-        class="block p-1 w-full text-left hover:text-gruvbox-yellow overflow-clip"
+        hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}"}' 
+        class="block p-1 w-full text-left hover:text-gruvbox-yellow"
     >
-        {{.FileName}}
+        {{.Path}}
     </button>
     {{end}}
 </div>

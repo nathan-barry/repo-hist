@@ -1,23 +1,31 @@
 package handlers
 
 import (
+	"encoding/base64"
 	"fmt"
 	"html/template"
 	"net/http"
 )
 
 func FetchFileHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Pinged -> FetchCode")
+	fmt.Println("Pinged -> FetchFile")
 
-	url := r.FormValue("raw_url")
-	fileName := r.FormValue("file_name")
-	body := getBody(url, githubKey)
+	url := r.FormValue("url")
+	path := r.FormValue("path")
+	// body := getBody(url, githubKey)
+
+	fmt.Println("PATH", path)
+
+	var content Content
+	getJSON(url, &content, githubKey)
+
+	decoded, _ := base64.StdEncoding.DecodeString(content.Content)
 
 	t := template.Must(template.ParseFiles("./views/home/file.html"))
 
 	data := map[string]any{
-		"Code":     string(body),
-		"FileName": fileName,
+		"File": string(decoded),
+		"Path": path,
 	}
 
 	err := t.Execute(w, data)

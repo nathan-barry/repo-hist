@@ -16,11 +16,21 @@ func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
 	var commitFiles Files
 	getJSON(url, &commitFiles, githubKey)
 
+	var dirURL DirURL
+	getJSON(url, &dirURL, githubKey)
+
+	printJSON("DirURL", dirURL)
+
+	var dir Dir
+	getJSON(dirURL.Commit.Tree.URL+"?recursive=1", &dir, githubKey)
+
 	t := template.Must(template.ParseFiles("./views/home/dir.html"))
 
 	data := map[string]any{
-		"FileArray": commitFiles.Files,
+		"Tree": dir.Tree,
 	}
+
+	fmt.Println(dir.Tree)
 
 	err := t.Execute(w, data)
 	if err != nil {

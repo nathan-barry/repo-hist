@@ -11,6 +11,27 @@ type RawCommit struct {
 	}
 }
 
+type DirURL struct {
+	Commit struct {
+		Tree struct {
+			URL string `json:"url"`
+		}
+	}
+}
+
+type Dir struct {
+	SHA  string `json:"sha"`
+	URL  string `json:"url"`
+	Tree []struct {
+		Path string `json:"path"`
+		URL  string `json:"url"`
+	} `json:"tree"`
+}
+
+type Content struct {
+	Content string `json:"content"`
+}
+
 type Files struct {
 	Files []File `json:"files"`
 }
