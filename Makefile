@@ -1,5 +1,5 @@
 run: build
-	clear && ./repo-hist
+	./cmd/bin/main
 
 build:
-	go build .
+	clear && ~/tailwindcss -i views/input.css -o static/tailwind.css --minify && go build -o ./cmd/bin ./cmd/main.go 

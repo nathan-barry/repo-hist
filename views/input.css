@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	html {
+		font-family: monospace 
+	}
+
+	body {
+		@apply bg-gruvbox-bg text-gruvbox-fg
+	}
+
+/* 	h1, h2, h3, h4, h5, h6 { */
+/* 		@apply font-bold relative */
+/* 	} */
+
+/* 	h1 { */
+/* 		@apply text-4xl */
+/* 	} */
+
+/* 	h2 { */
+/* 		@apply text-2xl */
+/* 	} */
+	
+/* 	li { */
+/* 		@apply cursor-pointer */
+/* 	} */
+
+/*     p { */
+/*         @apply text-lg md:text-xl md:text-justify mt-6; */
+/*     } */
+
+    code {
+        @apply text-base
+    }
+}

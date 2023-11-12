@@ -1,0 +1,28 @@
+{{define "content"}}
+<div class="p-8">
+    <!-- Search Bar -->
+    <form hx-post="/fetch-commits" hx-target="#commitsList" class="mb-6">
+        <input type="text" name="repoURL" placeholder="Enter user/repo" class="p-2 border rounded w-full bg-gruvbox-bg border-gruvbox-gray">
+    </form>
+
+    <div class="grid grid-cols-5 gap-8">
+        <!-- Commits Column -->
+        <div class="col-span-1">
+            <h1 class="font-semibold mb-4 text-xl text-gruvbox-green">Commits</h1>
+            <div id="commitsList"></div>
+        </div>
+
+        <!-- Current File -->
+        <div id="file" class="col-span-3 overflow-x-auto">
+            <h1 class="font-semibold mb-4 text-xl ">File</h1>
+            <div  class=""></div>
+        </div>
+
+        <!-- Files Col -->
+        <div class="col-span-1">
+            <h1 class="font-semibold mb-4 text-xl text-gruvbox-yellow">Files</h1>
+            <div id="dir"></div>
+        </div>
+    </div>
+</div>
+{{end}}

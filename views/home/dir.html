@@ -1,0 +1,12 @@
+<div>
+    {{ range .FileArray }}
+    <button 
+        hx-post="/fetch-file" 
+        hx-target="#file" 
+        hx-vals='{"raw_url": "{{.RawURL}}", "file_name": "{{.FileName}}"}' 
+        class="block p-1 w-full text-left hover:text-gruvbox-yellow overflow-clip"
+    >
+        {{.FileName}}
+    </button>
+    {{end}}
+</div>
