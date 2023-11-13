@@ -7,19 +7,10 @@ import (
 )
 
 func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Pinged -> FetchDir")
-
 	url := r.FormValue("url")
-
-	fmt.Println("THIS IS THE DIR URL ->", url)
-
-	var commitFiles Files
-	getJSON(url, &commitFiles, githubKey)
 
 	var dirURL DirURL
 	getJSON(url, &dirURL, githubKey)
-
-	printJSON("DirURL", dirURL)
 
 	var dir Dir
 	getJSON(dirURL.Commit.Tree.URL+"?recursive=1", &dir, githubKey)

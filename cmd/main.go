@@ -14,7 +14,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	http.HandleFunc("/", handlers.HomeHandler)
-	http.HandleFunc("/fetch-commits", handlers.FetchCommitsHandler)
+	http.HandleFunc("/fetch-repo", handlers.FetchRepoHandler)
 	http.HandleFunc("/fetch-dir", handlers.FetchDirHandler)
 	http.HandleFunc("/fetch-file", handlers.FetchFileHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))

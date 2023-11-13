@@ -8,11 +8,8 @@ import (
 )
 
 func FetchFileHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Pinged -> FetchFile")
-
 	url := r.FormValue("url")
 	path := r.FormValue("path")
-	// body := getBody(url, githubKey)
 
 	fmt.Println("PATH", path)
 

@@ -20,8 +20,6 @@ type DirURL struct {
 }
 
 type Dir struct {
-	SHA  string `json:"sha"`
-	URL  string `json:"url"`
 	Tree []struct {
 		Path string `json:"path"`
 		URL  string `json:"url"`

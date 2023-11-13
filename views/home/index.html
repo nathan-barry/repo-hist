@@ -1,60 +1,12 @@
 {{define "content"}}
 <div class="container px-8 py-8 text-github-dark max-w-full">
     <!-- Search Bar -->
-    <form hx-post="/fetch-commits" hx-target="#commitsList" class="mb-6">
+    <form hx-post="/fetch-repo" hx-target="#repo" class="mb-6">
         <input value="a-h/templ" type="text" name="repoURL" placeholder="Enter user/repo" class="p-2 border rounded w-full border-github-dark bg-github-dark-secondary focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
     </form>
 
-    <div class="grid grid-cols-12 gap-4">
-        <!-- Commits Column -->
-        <div class="col-span-2">
-            <h1 class="font-semibold mb-4 text-xl">Commits</h1>
-            <div id="commitsList" class="border border-github-dark rounded-lg bg-github-dark"></div>
-        </div>
-
-        <!-- Current File -->
-        <div id="file" class="col-span-8 overflow-x-auto">
-            <h1 class="font-semibold mb-4 text-xl">File</h1>
-        </div>
-
-        <!-- Files Column -->
-        <div class="col-span-2">
-            <h1 class="font-semibold mb-4 text-xl">Files</h1>
-            <div id="dir" class="border border-github-dark rounded-lg bg-github-dark"></div>
-        </div>
+    <div id="repo" class="grid grid-cols-12 gap-4">
+        <!-- Search puts stuff here -->
     </div>
 </div>
-
-<script>
-console.log("Test")
-// Function to simulate a click on the first button within a given parent element ID
-function clickFirstButtonInElement(elementId) {
-    setTimeout(function() {
-        const parentElement = document.getElementById(elementId);
-        if (parentElement) {
-            const buttons = parentElement.getElementsByTagName('button');
-            if (buttons.length > 0) {
-                console.log(`Clicking first button in #${elementId}`);
-                buttons[0].click();
-            } else {
-                console.log(`No buttons found in #${elementId}`);
-            }
-        } else {
-            console.log(`Element with ID #${elementId} not found`);
-        }
-    }, 50); // Delay of 100 milliseconds
-}
-
-// After commits are loaded, click the first one
-document.addEventListener('htmx:afterSwap', function(event) {
-    console.log('hx:afterSwap triggered for:', event.detail.target.id);
-
-    if (event.detail.target.id === 'commitsList') {
-        clickFirstButtonInElement('commitsList');
-    }
-    if (event.detail.target.id === 'dir') {
-        clickFirstButtonInElement('dir');
-    }
-});
-</script>
 {{end}}

@@ -1,0 +1,42 @@
+<!-- Commits Column -->
+<div class="col-span-2">
+    <h1 class="font-semibold mb-4 text-xl">Commits</h1>
+    <div id="commitsList" class="border border-github-dark rounded-lg bg-github-dark">
+        {{ range .RawCommits }}
+        <button 
+            hx-post="/fetch-dir" 
+            hx-target="#dir" 
+            hx-vals='{"url": "{{.URL}}"}' 
+            class="block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark truncate"
+        >
+            {{.Commit.Message}}
+        </button>
+        {{end}}
+    </div>
+</div>
+
+<!-- Current File -->
+<div id="file" class="col-span-8 overflow-x-auto">
+    <h1 class="font-semibold mb-4 text-xl text-github-dark">{{.Path}}</h1>
+    <div class="border border-github-dark rounded-lg p-4 bg-github-dark">
+        <pre><code class="hidden">{{ .File }}</code></pre>
+    </div>
+    <script> hljs.highlightAll(); </script>
+</div>
+
+<!-- Files Column -->
+<div class="col-span-2">
+    <h1 class="font-semibold mb-4 text-xl">Files</h1>
+    <div id="dir" class="border border-github-dark rounded-lg bg-github-dark">
+        {{ range .Tree }}
+        <button 
+            hx-post="/fetch-file" 
+            hx-target="#file" 
+            hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}"}' 
+            class="block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
+        >
+            {{.Path}}
+        </button>
+        {{end}}
+    </div>
+</div>
