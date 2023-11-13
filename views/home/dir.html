@@ -10,7 +10,7 @@
         <button 
             hx-post="/fetch-file" 
             hx-target="#file" 
-            hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}"}' 
+            hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}", "patch": "{{.Patch}}"}' 
             onclick="highlightFile(this)"
             class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
         >

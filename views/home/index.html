@@ -12,10 +12,9 @@
 
 <script>
     function highlightCommit(commitElement) {
-        console.log("HIT")
         // Remove highlight from all commits
         document.querySelectorAll('.commit-button').forEach(function(btn) {
-            btn.classList.remove('bg-github-dark-secondary'); // 'highlighted-commit' is a CSS class you define
+            btn.classList.remove('bg-github-dark-secondary');
         });
 
         // Highlight the clicked commit
@@ -23,14 +22,51 @@
     }
 
     function highlightFile(commitElement) {
-        console.log("HIT2")
         // Remove highlight from all commits
         document.querySelectorAll('.file-button').forEach(function(btn) {
-            btn.classList.remove('bg-github-dark-secondary'); // 'highlighted-commit' is a CSS class you define
+            btn.classList.remove('bg-github-dark-secondary');
         });
 
         // Highlight the clicked commit
         commitElement.classList.add('bg-github-dark-secondary');
+    }
+
+    function selectFile(buttonElement) {
+        document.querySelectorAll('.file-content').forEach(function(btn) {
+            btn.classList.remove('hidden');
+        });
+
+        document.querySelectorAll('.file-changes').forEach(function(btn) {
+            btn.classList.add('hidden');
+        });
+
+        document.querySelectorAll('.select-changes-button').forEach(function(btn) {
+            btn.classList.remove('bg-github-dark-secondary');
+        });
+
+        document.querySelectorAll('.select-file-button').forEach(function(btn) {
+            btn.classList.add('bg-github-dark-secondary');
+        });
+
+    }
+
+    function selectChanges(buttonElement) {
+        document.querySelectorAll('.file-content').forEach(function(btn) {
+            btn.classList.add('hidden'); 
+        });
+
+        document.querySelectorAll('.file-changes').forEach(function(btn) {
+            btn.classList.remove('hidden'); 
+        });
+
+        document.querySelectorAll('.select-file-button').forEach(function(btn) {
+            btn.classList.remove('bg-github-dark-secondary');
+        });
+
+        document.querySelectorAll('.select-changes-button').forEach(function(btn) {
+            btn.classList.add('bg-github-dark-secondary');
+        });
+
     }
 </script>
 {{end}}

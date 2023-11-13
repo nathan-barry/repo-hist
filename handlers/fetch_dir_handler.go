@@ -1,12 +1,14 @@
 package handlers
 
 import (
+	"encoding/base64"
 	"fmt"
 	"html/template"
 	"net/http"
 )
 
 func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("FetchDirHandler...")
 	url := r.FormValue("url")
 
 	var commitData CommitData
@@ -22,6 +24,7 @@ func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
 			changedFiles[f.FileName] = ChangeData{
 				Additions: f.Additions,
 				Deletions: f.Deletions,
+				Patch:     base64.StdEncoding.EncodeToString([]byte(f.Patch)),
 			}
 		}
 	}
@@ -33,6 +36,7 @@ func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
 		if cd, ok := changedFiles[dir.Tree[i].Path]; ok {
 			dir.Tree[i].Deletions = cd.Deletions
 			dir.Tree[i].Additions = cd.Additions
+			dir.Tree[i].Patch = cd.Patch
 		}
 	}
 
@@ -42,6 +46,7 @@ func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
 			URL       string `json:"url"`
 			Additions int
 			Deletions int
+			Patch     string
 		}{
 			Path: f,
 			URL:  "deleted",

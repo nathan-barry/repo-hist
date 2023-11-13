@@ -22,13 +22,12 @@ func init() {
 }
 
 func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("FetchRepoHandler...")
 	// Grab repo info
 	url := "https://api.github.com/repos/" + r.FormValue("repoURL") + "/commits"
 
 	lastNum, _ := getLastPageNumber(url)
 	rawCommits := fetchLastTenCommits(url, lastNum)
-
-	rawCommits[0].Selected = true
 
 	// Grab first commit dir
 	firstCommitURL := rawCommits[0].URL
@@ -46,6 +45,7 @@ func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
 			changedFiles[f.FileName] = ChangeData{
 				Additions: f.Additions,
 				Deletions: f.Deletions,
+				Patch:     base64.StdEncoding.EncodeToString([]byte(f.Patch)),
 			}
 		}
 	}
@@ -57,6 +57,7 @@ func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
 		if cd, ok := changedFiles[dir.Tree[i].Path]; ok {
 			dir.Tree[i].Deletions = cd.Deletions
 			dir.Tree[i].Additions = cd.Additions
+			dir.Tree[i].Patch = cd.Patch
 		}
 	}
 
@@ -66,6 +67,7 @@ func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
 			URL       string `json:"url"`
 			Additions int
 			Deletions int
+			Patch     string
 		}{
 			Path: f,
 			URL:  "deleted",
@@ -88,6 +90,7 @@ func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
 		"Tree":       dir.Tree,
 		"File":       string(decoded),
 		"Path":       path,
+		"FirstPatch": commitData.Files[0].Patch,
 	}
 
 	t := template.Must(template.ParseFiles("./views/home/repo.html"))

@@ -9,7 +9,6 @@ type RawCommit struct {
 		}
 		Message string `json:"message"`
 	}
-	Selected bool
 }
 
 type CommitData struct {
@@ -27,6 +26,7 @@ type Dir struct {
 		URL       string `json:"url"`
 		Additions int
 		Deletions int
+		Patch     string
 	} `json:"tree"`
 }
 
@@ -50,4 +50,5 @@ type File struct {
 type ChangeData struct {
 	Additions int
 	Deletions int
+	Patch     string
 }
