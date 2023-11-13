@@ -77,11 +77,12 @@ func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
 		"Tree":       dir.Tree,
 		"File":       string(decoded),
 		"Path":       path,
-		"FirstPatch": commitData.Files[0].Patch,
+		"Patch":      commitData.Files[0].Patch,
 	}
 
 	t := template.Must(template.ParseFiles(
 		"./views/home/repo.html",
+		"./views/home/file.html",
 	))
 
 	err := t.Execute(w, data)
