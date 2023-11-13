@@ -32,7 +32,6 @@
         </div>
     </div>
     <script> hljs.highlightAll(); </script>
-
 </div>
 
 <!-- Files Column -->
@@ -40,31 +39,22 @@
     <h1 class="font-semibold mb-4 text-xl">Files</h1>
     <div id="dir" class="border border-github-dark rounded-lg bg-github-dark">
         {{ range $index, $tree := .Tree }}
-            {{ if eq $tree.URL "deleted" }} 
-                <button 
-                    class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
-                >
-                    {{$tree.Path}}
-                    <span class="text-github-dark-red">deleted</span>
-                </button>
-            {{ else }}
-                <button 
-                    hx-post="/fetch-file" 
-                    hx-target="#file" 
-                    hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}", "patch": "{{.Patch}}"}' 
-                    onclick="highlightFile(this)"
-                    class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark {{if eq $index 0}}bg-github-dark-secondary{{end}}"
-                >
-                    {{$tree.Path}}
-                    
-                    {{ if $tree.Deletions }} 
-                        <span class="text-github-dark-red">-{{$tree.Deletions}}</span>
-                    {{end}}
-                    {{ if $tree.Additions }}
-                        <span class="text-github-dark-green">+{{$tree.Additions}}</span>
-                    {{end}}
-                </button>
-            {{end}}
+            <button 
+                hx-post="/fetch-file" 
+                hx-target="#file" 
+                hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}", "patch": "{{.Patch}}"}' 
+                onclick="highlightFile(this)"
+                class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark {{if eq $index 0}}bg-github-dark-secondary{{end}}"
+            >
+                {{$tree.Path}}
+                
+                {{ if $tree.Deletions }} 
+                    <span class="text-github-dark-red">-{{$tree.Deletions}}</span>
+                {{end}}
+                {{ if $tree.Additions }}
+                    <span class="text-github-dark-green">+{{$tree.Additions}}</span>
+                {{end}}
+            </button>
         {{end}}
     </div>
 </div>

@@ -8,7 +8,8 @@ import (
 )
 
 func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("FetchDirHandler...")
+	// fmt.Println("FetchDirHandler...")
+
 	url := r.FormValue("url")
 
 	var commitData CommitData

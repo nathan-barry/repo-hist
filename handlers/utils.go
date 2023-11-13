@@ -42,6 +42,7 @@ func getLastPageNumber(url string) (int, error) {
 	return lastPage, nil
 }
 
+// Currently only grabs last page (probably enough)
 func fetchLastTenCommits(url string, lastNum int) []*RawCommit {
 	lastURL := fmt.Sprintf("%s?page=%v", url, lastNum)
 
@@ -58,7 +59,7 @@ func fetchLastTenCommits(url string, lastNum int) []*RawCommit {
 
 // Takes in the URL and an optional github api key
 func getBody(url string, key string) []byte {
-	fmt.Println("\nGetting from URL:", url)
+	// fmt.Println("\nGetting from URL:", url)
 
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
@@ -76,7 +77,7 @@ func getBody(url string, key string) []byte {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-	fmt.Println("STATUS CODE:", resp.StatusCode)
+	// fmt.Println("STATUS CODE:", resp.StatusCode)
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -89,7 +90,7 @@ func getBody(url string, key string) []byte {
 func getJSON(url string, data any, key string) {
 	body := getBody(url, key)
 	if err := json.Unmarshal(body, &data); err != nil {
-		fmt.Println("Get JSON Fucked up", err)
+		fmt.Println("GetJSON Error", err)
 		log.Fatal(err)
 	}
 }
@@ -97,7 +98,7 @@ func getJSON(url string, data any, key string) {
 func prettyJSON(data any) []byte {
 	prettyJSON, err := json.MarshalIndent(data, "", "    ")
 	if err != nil {
-		fmt.Println("PrettyJSON Fucked up")
+		fmt.Println("PrettyJSON Error", err)
 		log.Fatal(err)
 	}
 	return prettyJSON

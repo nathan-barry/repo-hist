@@ -4,25 +4,12 @@ import (
 	"encoding/base64"
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
-	"os"
-
-	"github.com/joho/godotenv"
 )
 
-var githubKey string
-
-func init() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Printf("Warning: Error loading .env file: %s", err)
-	}
-	githubKey = os.Getenv("GITHUB_AUTH")
-}
-
 func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("FetchRepoHandler...")
+	// fmt.Println("FetchRepoHandler...")
+
 	// Grab repo info
 	url := "https://api.github.com/repos/" + r.FormValue("repoURL") + "/commits"
 
@@ -93,7 +80,9 @@ func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
 		"FirstPatch": commitData.Files[0].Patch,
 	}
 
-	t := template.Must(template.ParseFiles("./views/home/repo.html"))
+	t := template.Must(template.ParseFiles(
+		"./views/home/repo.html",
+	))
 
 	err := t.Execute(w, data)
 	if err != nil {
