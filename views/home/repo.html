@@ -7,7 +7,8 @@
             hx-post="/fetch-dir" 
             hx-target="#dir" 
             hx-vals='{"url": "{{.URL}}"}' 
-            class="block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark truncate {{ if .Selected }}bg-github-dark-secondary{{end}}"
+            onClick="highlightCommit(this)"
+            class="commit-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark truncate {{ if .Selected }}bg-github-dark-secondary{{end}}"
         >
             {{.Commit.Message}}
         </button>
@@ -29,18 +30,31 @@
     <h1 class="font-semibold mb-4 text-xl">Files</h1>
     <div id="dir" class="border border-github-dark rounded-lg bg-github-dark">
         {{ range .Tree }}
-        <button 
-            hx-post="/fetch-file" 
-            hx-target="#file" 
-            hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}"}' 
-            class="block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
-        >
-            {{.Path}}
-            
-            {{ if .Deletions }} <span class="text-github-dark-red">+{{.Deletions}}</span> {{end}}
-            {{ if .Additions }} <span class="text-github-dark-green">+{{.Additions}}</span> {{end}}
-            {{ if eq .Status "deleted" }} <span class="text-github-dark-red">deleted</span> {{end}}
-        </button>
+            {{ if eq .URL "deleted" }} 
+                <button 
+                    class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
+                >
+                    {{.Path}}
+                    <span class="text-github-dark-red">deleted</span>
+                </button>
+            {{ else }}
+                <button 
+                    hx-post="/fetch-file" 
+                    hx-target="#file" 
+                    hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}"}' 
+                    onclick="highlightFile(this)"
+                    class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
+                >
+                    {{.Path}}
+                    
+                    {{ if .Deletions }} 
+                        <span class="text-github-dark-red">-{{.Deletions}}</span>
+                    {{end}}
+                    {{ if .Additions }}
+                        <span class="text-github-dark-green">+{{.Additions}}</span>
+                    {{end}}
+                </button>
+            {{end}}
         {{end}}
     </div>
 </div>

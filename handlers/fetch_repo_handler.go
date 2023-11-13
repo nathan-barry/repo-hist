@@ -37,11 +37,16 @@ func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
 	getJSON(firstCommitURL, &commitData, githubKey)
 
 	changedFiles := make(map[string]ChangeData, len(commitData.Files))
+	deletedFiles := []string{}
 	for _, f := range commitData.Files {
-		changedFiles[f.FileName] = ChangeData{
-			Additions: f.Additions,
-			Deletions: f.Deletions,
-			Status:    f.Status,
+		if f.Status == "removed" {
+			print("DELETED", f.FileName)
+			deletedFiles = append(deletedFiles, f.FileName)
+		} else {
+			changedFiles[f.FileName] = ChangeData{
+				Additions: f.Additions,
+				Deletions: f.Deletions,
+			}
 		}
 	}
 
@@ -52,8 +57,20 @@ func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
 		if cd, ok := changedFiles[dir.Tree[i].Path]; ok {
 			dir.Tree[i].Deletions = cd.Deletions
 			dir.Tree[i].Additions = cd.Additions
-			dir.Tree[i].Status = cd.Status
 		}
+	}
+
+	for _, f := range deletedFiles {
+		tree := struct {
+			Path      string `json:"path"`
+			URL       string `json:"url"`
+			Additions int
+			Deletions int
+		}{
+			Path: f,
+			URL:  "deleted",
+		}
+		dir.Tree = append(dir.Tree, tree)
 	}
 
 	// Grab first file

@@ -9,4 +9,28 @@
         <!-- Search puts stuff here -->
     </div>
 </div>
+
+<script>
+    function highlightCommit(commitElement) {
+        console.log("HIT")
+        // Remove highlight from all commits
+        document.querySelectorAll('.commit-button').forEach(function(btn) {
+            btn.classList.remove('bg-github-dark-secondary'); // 'highlighted-commit' is a CSS class you define
+        });
+
+        // Highlight the clicked commit
+        commitElement.classList.add('bg-github-dark-secondary');
+    }
+
+    function highlightFile(commitElement) {
+        console.log("HIT2")
+        // Remove highlight from all commits
+        document.querySelectorAll('.file-button').forEach(function(btn) {
+            btn.classList.remove('bg-github-dark-secondary'); // 'highlighted-commit' is a CSS class you define
+        });
+
+        // Highlight the clicked commit
+        commitElement.classList.add('bg-github-dark-secondary');
+    }
+</script>
 {{end}}

@@ -1,14 +1,27 @@
 {{ range .Tree }}
-<button 
-    hx-post="/fetch-file" 
-    hx-target="#file" 
-    hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}"}' 
-    class="block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
->
-    {{.Path}}
-    
-    {{ if .Additions }} <span class="text-github-dark-green">+{{.Additions}}</span> {{end}}
-    {{ if .Deletions }} <span class="text-github-dark-red">+{{.Deletions}}</span> {{end}}
-    {{ if eq .Status "deleted" }} <span class="text-github-dark-red">deleted</span> {{end}}
-</button>
+    {{ if eq .URL "deleted" }} 
+        <button 
+            class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
+        >
+            {{.Path}}
+            <span class="text-github-dark-red">deleted</span>
+        </button>
+    {{ else }}
+        <button 
+            hx-post="/fetch-file" 
+            hx-target="#file" 
+            hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}"}' 
+            onclick="highlightFile(this)"
+            class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
+        >
+            {{.Path}}
+            
+            {{ if .Deletions }} 
+                <span class="text-github-dark-red">-{{.Deletions}}</span>
+            {{end}}
+            {{ if .Additions }}
+                <span class="text-github-dark-green">+{{.Additions}}</span>
+            {{end}}
+        </button>
+    {{end}}
 {{end}}

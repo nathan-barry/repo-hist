@@ -27,7 +27,6 @@ type Dir struct {
 		URL       string `json:"url"`
 		Additions int
 		Deletions int
-		Status    string
 	} `json:"tree"`
 }
 
@@ -51,5 +50,4 @@ type File struct {
 type ChangeData struct {
 	Additions int
 	Deletions int
-	Status    string
 }
