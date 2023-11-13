@@ -9,6 +9,8 @@ module.exports = {
       },
       textColor: {
         'github-dark': '#c9d1d9', // GitHub dark text color
+        'github-dark-green': '#238636',
+        'github-dark-red': '#da3633',
         // ... other colors as needed
       },
       borderColor: {

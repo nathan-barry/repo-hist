@@ -7,7 +7,7 @@
             hx-post="/fetch-dir" 
             hx-target="#dir" 
             hx-vals='{"url": "{{.URL}}"}' 
-            class="block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark truncate"
+            class="block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark truncate {{ if .Selected }}bg-github-dark-secondary{{end}}"
         >
             {{.Commit.Message}}
         </button>
@@ -36,6 +36,10 @@
             class="block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
         >
             {{.Path}}
+            
+            {{ if .Deletions }} <span class="text-github-dark-red">+{{.Deletions}}</span> {{end}}
+            {{ if .Additions }} <span class="text-github-dark-green">+{{.Additions}}</span> {{end}}
+            {{ if eq .Status "deleted" }} <span class="text-github-dark-red">deleted</span> {{end}}
         </button>
         {{end}}
     </div>

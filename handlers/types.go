@@ -9,29 +9,30 @@ type RawCommit struct {
 		}
 		Message string `json:"message"`
 	}
+	Selected bool
 }
 
-type DirURL struct {
+type CommitData struct {
 	Commit struct {
 		Tree struct {
 			URL string `json:"url"`
 		}
 	}
+	Files []File `json:"files"`
 }
 
 type Dir struct {
 	Tree []struct {
-		Path string `json:"path"`
-		URL  string `json:"url"`
+		Path      string `json:"path"`
+		URL       string `json:"url"`
+		Additions int
+		Deletions int
+		Status    string
 	} `json:"tree"`
 }
 
 type Content struct {
 	Content string `json:"content"`
-}
-
-type Files struct {
-	Files []File `json:"files"`
 }
 
 type File struct {
@@ -45,4 +46,10 @@ type File struct {
 	Patch       string `json:"patch"`
 	SHA         string `json:"sha"`
 	Status      string `json:"status"`
+}
+
+type ChangeData struct {
+	Additions int
+	Deletions int
+	Status    string
 }
