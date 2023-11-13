@@ -1,38 +1,21 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["views/**/*.html"],
   theme: {
     extend: {
       backgroundColor: {
-        'gruvbox-bg': '#282828',
-        'gruvbox-red': '#cc241d',
-        'gruvbox-green': '#98971a',
-        'gruvbox-yellow': '#d79921',
-        'gruvbox-blue': '#458588',
-        'gruvbox-purple': '#b16286',
-        'gruvbox-aqua': '#689d6a',
-        'gruvbox-gray': '#a89984',
+        'github-dark': '#0d1117', // GitHub dark background
+        'github-dark-secondary': '#161b22', // Secondary background color
+        // ... other colors as needed
       },
       textColor: {
-        'gruvbox-fg': '#ebdbb2',
-        'gruvbox-red': '#cc241d',
-        'gruvbox-green': '#98971a',
-        'gruvbox-yellow': '#d79921',
-        'gruvbox-blue': '#458588',
-        'gruvbox-purple': '#b16286',
-        'gruvbox-aqua': '#689d6a',
-        'gruvbox-gray': '#a89984',
+        'github-dark': '#c9d1d9', // GitHub dark text color
+        // ... other colors as needed
       },
       borderColor: {
-        'gruvbox-fg': '#ebdbb2',
-        'gruvbox-red': '#cc241d',
-        'gruvbox-green': '#98971a',
-        'gruvbox-yellow': '#d79921',
-        'gruvbox-blue': '#458588',
-        'gruvbox-purple': '#b16286',
-        'gruvbox-aqua': '#689d6a',
-        'gruvbox-gray': '#a89984',
+        'github-dark': '#30363d', // GitHub dark border color
+        // ... other colors as needed
       },
+      // Add other GitHub-like dark theme extensions if needed
     },
   },
   plugins: [],

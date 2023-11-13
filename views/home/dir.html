@@ -1,12 +1,10 @@
-<div>
-    {{ range .Tree }}
-    <button 
-        hx-post="/fetch-file" 
-        hx-target="#file" 
-        hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}"}' 
-        class="block p-1 w-full text-left hover:text-gruvbox-yellow"
-    >
-        {{.Path}}
-    </button>
-    {{end}}
-</div>
+{{ range .Tree }}
+<button 
+    hx-post="/fetch-file" 
+    hx-target="#file" 
+    hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}"}' 
+    class="block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
+>
+    {{.Path}}
+</button>
+{{end}}

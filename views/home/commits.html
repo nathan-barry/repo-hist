@@ -1,7 +1,11 @@
-<div>
-    {{ range .RawCommits }}
-    <button hx-post="/fetch-dir" hx-target="#dir" hx-vals='{"url": "{{.URL}}"}' class="block p-1 mb-2 w-full text-left hover:text-gruvbox-green overflow-hidden">
-        {{.Commit.Message}}
-    </button>
-    {{end}}
-</div>
+{{ range .RawCommits }}
+<button 
+    hx-post="/fetch-dir" 
+    hx-target="#dir" 
+    hx-vals='{"url": "{{.URL}}"}' 
+    class="block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark truncate"
+>
+    {{.Commit.Message}}
+</button>
+{{end}}
+
