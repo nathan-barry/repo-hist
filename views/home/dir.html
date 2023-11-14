@@ -1,21 +1,29 @@
 {{ range $index, $tree := .Tree }}
     {{ if eq .URL "deleted" }} 
+        <!-- Displays deleted files -->
         <button 
-            class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
+            class="file-button
+                block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark truncate"
         >
             {{.Path}}
             <span class="text-github-dark-red">deleted</span>
         </button>
     {{ else }}
+        <!-- Normal File -->
         <button 
             hx-post="/fetch-file" 
             hx-target="#file" 
             hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}", "patch": "{{.Patch}}"}' 
             onclick="highlightFile(this)"
-            class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark {{if and $.InitialFetch (eq $index 0)}}bg-github-dark-secondary{{end}}"
+            class="file-button
+                block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark truncate
+                {{ if and $.InitialFetch (eq $index 0) }}
+                    bg-github-dark-secondary
+                {{end}}"
         >
             {{$tree.Path}}
             
+            <!-- Display Number of Modifications -->
             {{ if $tree.Deletions }} 
                 <span class="text-github-dark-red">-{{$tree.Deletions}}</span>
             {{end}}

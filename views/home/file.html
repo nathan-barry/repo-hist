@@ -1,14 +1,19 @@
 <h1 class="font-semibold mb-4 text-xl text-github-dark">{{.Path}}</h1>
 <div class="border border-github-dark rounded-lg p-4 bg-github-dark">
+
+    <!-- File/Changes Buttons -->
     <div class="flex">
         <button onclick="selectFile()" class="select-file-button block px-3 py-1 text-left hover:bg-github-dark-secondary bg-github-dark-secondary rounded-l border border-github-dark">File</button>
         <button onclick="selectChanges()" class="select-changes-button block px-3 py-1 text-left hover:bg-github-dark-secondary rounded-r border-l-0 border border-github-dark">Changes</button>
     </div>
+
+    <!-- File Content and Changes -->
     <div class="file-content">
         <pre><code class="hidden">{{ .File }}</code></pre>
     </div>
     <div class="file-changes hidden">
-        <pre><code class="hidden">{{ .Patch }}</code></pre>
+        <pre><code class="language-diff hidden">{{ .Patch }}</code></pre>
     </div>
+
 </div>
 <script> hljs.highlightAll(); </script>
