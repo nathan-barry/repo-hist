@@ -19,7 +19,6 @@ func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
 	deletedFiles := []string{}
 	for _, f := range commitData.Files {
 		if f.Status == "removed" {
-			print("DELETED", f.FileName)
 			deletedFiles = append(deletedFiles, f.FileName)
 		} else {
 			changedFiles[f.FileName] = ChangeData{
@@ -58,7 +57,8 @@ func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("./views/home/dir.html"))
 
 	data := map[string]any{
-		"Tree": dir.Tree,
+		"Tree":         dir.Tree,
+		"InitialFetch": false,
 	}
 
 	err := t.Execute(w, data)

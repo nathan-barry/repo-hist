@@ -6,7 +6,7 @@
     </form>
 
     <div id="repo" class="grid grid-cols-12 gap-4">
-        <!-- Search puts stuff here -->
+        <!-- This is the banner hero -->
         <div class="col-span-12 mt-16">
             <h1 class="text-4xl font-bold text-purple-600 mb-2 text-center">Repo History</h1>
             <br>
@@ -20,59 +20,53 @@
     </div>
 </div>
 
+
+<!-- Global JS scripts -->
 <script>
+    // Focuses on current commit in left column
     function highlightCommit(commitElement) {
-        // Remove highlight from all commits
         document.querySelectorAll('.commit-button').forEach(function(btn) {
             btn.classList.remove('bg-github-dark-secondary');
         });
-
-        // Highlight the clicked commit
         commitElement.classList.add('bg-github-dark-secondary');
     }
 
+    // Focuses on current file in right column
     function highlightFile(commitElement) {
-        // Remove highlight from all commits
         document.querySelectorAll('.file-button').forEach(function(btn) {
             btn.classList.remove('bg-github-dark-secondary');
         });
-
-        // Highlight the clicked commit
         commitElement.classList.add('bg-github-dark-secondary');
     }
 
+    // Selects file contents and focuses File button
     function selectFile(buttonElement) {
         document.querySelectorAll('.file-content').forEach(function(btn) {
             btn.classList.remove('hidden');
         });
-
         document.querySelectorAll('.file-changes').forEach(function(btn) {
             btn.classList.add('hidden');
         });
-
         document.querySelectorAll('.select-changes-button').forEach(function(btn) {
             btn.classList.remove('bg-github-dark-secondary');
         });
-
         document.querySelectorAll('.select-file-button').forEach(function(btn) {
             btn.classList.add('bg-github-dark-secondary');
         });
 
     }
 
+    // Selects file changes and focuses File button
     function selectChanges(buttonElement) {
         document.querySelectorAll('.file-content').forEach(function(btn) {
             btn.classList.add('hidden'); 
         });
-
         document.querySelectorAll('.file-changes').forEach(function(btn) {
             btn.classList.remove('hidden'); 
         });
-
         document.querySelectorAll('.select-file-button').forEach(function(btn) {
             btn.classList.remove('bg-github-dark-secondary');
         });
-
         document.querySelectorAll('.select-changes-button').forEach(function(btn) {
             btn.classList.add('bg-github-dark-secondary');
         });

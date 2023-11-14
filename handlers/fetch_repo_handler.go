@@ -26,7 +26,6 @@ func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
 	deletedFiles := []string{}
 	for _, f := range commitData.Files {
 		if f.Status == "removed" {
-			print("DELETED", f.FileName)
 			deletedFiles = append(deletedFiles, f.FileName)
 		} else {
 			changedFiles[f.FileName] = ChangeData{
@@ -73,16 +72,18 @@ func FetchRepoHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Template stuff below
 	data := map[string]any{
-		"RawCommits": rawCommits,
-		"Tree":       dir.Tree,
-		"File":       string(decoded),
-		"Path":       path,
-		"Patch":      commitData.Files[0].Patch,
+		"RawCommits":   rawCommits,
+		"Tree":         dir.Tree,
+		"InitialFetch": true,
+		"File":         string(decoded),
+		"Path":         path,
+		"Patch":        commitData.Files[0].Patch,
 	}
 
 	t := template.Must(template.ParseFiles(
 		"./views/home/repo.html",
 		"./views/home/file.html",
+		"./views/home/dir.html",
 	))
 
 	err := t.Execute(w, data)

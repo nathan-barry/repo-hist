@@ -1,4 +1,4 @@
-{{ range .Tree }}
+{{ range $index, $tree := .Tree }}
     {{ if eq .URL "deleted" }} 
         <button 
             class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
@@ -12,15 +12,15 @@
             hx-target="#file" 
             hx-vals='{"url": "{{.URL}}", "path": "{{.Path}}", "patch": "{{.Patch}}"}' 
             onclick="highlightFile(this)"
-            class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark"
+            class="file-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark {{if and $.InitialFetch (eq $index 0)}}bg-github-dark-secondary{{end}}"
         >
-            {{.Path}}
+            {{$tree.Path}}
             
-            {{ if .Deletions }} 
-                <span class="text-github-dark-red">-{{.Deletions}}</span>
+            {{ if $tree.Deletions }} 
+                <span class="text-github-dark-red">-{{$tree.Deletions}}</span>
             {{end}}
-            {{ if .Additions }}
-                <span class="text-github-dark-green">+{{.Additions}}</span>
+            {{ if $tree.Additions }}
+                <span class="text-github-dark-green">+{{$tree.Additions}}</span>
             {{end}}
         </button>
     {{end}}
