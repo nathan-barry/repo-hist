@@ -3,21 +3,17 @@ module.exports = {
   theme: {
     extend: {
       backgroundColor: {
-        'github-dark': '#0d1117', // GitHub dark background
-        'github-dark-secondary': '#161b22', // Secondary background color
-        // ... other colors as needed
+        'github-dark': '#0d1117',
+        'github-dark-secondary': '#161b22',
       },
       textColor: {
-        'github-dark': '#c9d1d9', // GitHub dark text color
+        'github-dark': '#c9d1d9',
         'github-dark-green': '#238636',
         'github-dark-red': '#da3633',
-        // ... other colors as needed
       },
       borderColor: {
-        'github-dark': '#30363d', // GitHub dark border color
-        // ... other colors as needed
+        'github-dark': '#30363d',
       },
-      // Add other GitHub-like dark theme extensions if needed
     },
   },
   plugins: [],

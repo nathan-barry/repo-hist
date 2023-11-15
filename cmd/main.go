@@ -10,6 +10,7 @@ import (
 
 func main() {
 	fmt.Println("Starting server...")
+
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 

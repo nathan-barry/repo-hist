@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -13,14 +14,13 @@ import (
 // getLastPageNumber fetches the first page of commits for the specified repository
 // and parses the `Link` header to find the last page number.
 func getLastPageNumber(url string) (int, error) {
-	// Perform a GET request to the URL
 	resp, err := http.Get(url)
 	if err != nil {
 		return 0, err
 	}
 	defer resp.Body.Close()
 
-	// Extract the Link header
+	// Extract the Link header. If "" then only 1 page
 	linkHeader := resp.Header.Get("Link")
 	if linkHeader == "" {
 		return 1, nil
@@ -42,14 +42,13 @@ func getLastPageNumber(url string) (int, error) {
 	return lastPage, nil
 }
 
-// Currently only grabs last page (probably enough)
-func fetchLastTenCommits(url string, lastNum int) []*RawCommit {
+func fetchLastCommits(url string, lastNum int) []*RawCommit {
 	lastURL := fmt.Sprintf("%s?page=%v", url, lastNum)
 
 	var commits []*RawCommit
 	getJSON(lastURL, &commits, githubKey)
 
-	// reverse
+	// reverse list
 	for i, j := 0, len(commits)-1; i < j; i, j = i+1, j-1 {
 		commits[i], commits[j] = commits[j], commits[i]
 	}
@@ -57,10 +56,51 @@ func fetchLastTenCommits(url string, lastNum int) []*RawCommit {
 	return commits
 }
 
-// Takes in the URL and an optional github api key
-func getBody(url string, key string) []byte {
-	// fmt.Println("\nGetting from URL:", url)
+func processChangeFilesInfo(commitData CommitData) (map[string]ChangeData, []string) {
+	changedFiles := make(map[string]ChangeData, len(commitData.Files))
+	deletedFiles := []string{}
+	for _, f := range commitData.Files {
+		if f.Status == "removed" {
+			deletedFiles = append(deletedFiles, f.FileName)
+		} else {
+			changedFiles[f.FileName] = ChangeData{
+				Additions: f.Additions,
+				Deletions: f.Deletions,
+				Patch:     base64.StdEncoding.EncodeToString([]byte(f.Patch)),
+			}
+		}
+	}
 
+	return changedFiles, deletedFiles
+}
+
+func addDeletedFilesToDir(deletedFiles []string, dir *Dir) {
+	for _, f := range deletedFiles {
+		tree := struct {
+			Path      string `json:"path"`
+			URL       string `json:"url"`
+			Additions int
+			Deletions int
+			Patch     string
+		}{
+			Path: f,
+			URL:  "deleted",
+		}
+		dir.Tree = append(dir.Tree, tree)
+	}
+}
+
+func addChangedFileInfoToDir(changedFiles map[string]ChangeData, dir *Dir) {
+	for i := 0; i < len(dir.Tree); i++ {
+		if cd, ok := changedFiles[dir.Tree[i].Path]; ok {
+			dir.Tree[i].Deletions = cd.Deletions
+			dir.Tree[i].Additions = cd.Additions
+			dir.Tree[i].Patch = cd.Patch
+		}
+	}
+}
+
+func getBody(url string, key string) []byte {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -77,7 +117,6 @@ func getBody(url string, key string) []byte {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-	// fmt.Println("STATUS CODE:", resp.StatusCode)
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -95,15 +134,13 @@ func getJSON(url string, data any, key string) {
 	}
 }
 
-func prettyJSON(data any) []byte {
+// Helper to print after getJSON for debugging
+func printJSON(data any) {
 	prettyJSON, err := json.MarshalIndent(data, "", "    ")
 	if err != nil {
 		fmt.Println("PrettyJSON Error", err)
 		log.Fatal(err)
 	}
-	return prettyJSON
-}
 
-func printJSON(name string, data any) {
-	fmt.Println("PRINT_JSON: " + name + ":\n" + string(prettyJSON(data)))
+	fmt.Println("PRINT_JSON: ", string(prettyJSON))
 }
