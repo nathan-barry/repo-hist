@@ -1,5 +1,5 @@
 <!-- Commits Column -->
-<div class="flex-none w-1/6">
+<div class="col-span-2">
     <h1 class="font-semibold mb-4 text-xl">Commits</h1>
     <div id="commitsList">
         <div class="border border-github-dark rounded-lg bg-github-dark">
@@ -46,6 +46,7 @@
 </div>
 
 <!-- Dir and File Columns -->
-<div id="dir-file-cols" class="grid grid-cols-10 gap-4 w-full">
+<div id="dir-file-cols" class="col-span-10 grid grid-cols-10 gap-4">
         {{ template "dir.html" . }}
+    </div>
 </div>
