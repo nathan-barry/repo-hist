@@ -7,16 +7,24 @@ import (
 )
 
 func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("-> Fetch Dir Handler")
 	url := r.FormValue("url")
 
 	// Grabs the commit metadata
 	var commitData CommitData
-	getJSON(url, &commitData, githubKey)
+	if err := getJSON(url, &commitData); err != nil {
+		fmt.Println("getJSON error:", url)
+		return
+	}
+
 	changedFiles, deletedFiles := processChangeFilesInfo(commitData)
 
 	// Grabs all the files in the commit, adds commit metadata
 	var dir Dir
-	getJSON(commitData.Commit.Tree.URL+"?recursive=1", &dir, githubKey)
+	if err := getJSON(commitData.Commit.Tree.URL+"?recursive=1", &dir); err != nil {
+		fmt.Println("getJSON error:", url)
+		return
+	}
 	addChangedFileInfoToDir(changedFiles, &dir)
 	addDeletedFilesToDir(deletedFiles, &dir)
 

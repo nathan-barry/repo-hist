@@ -16,6 +16,7 @@ func init() {
 	if err != nil {
 		log.Printf("Warning: Error loading .env file: %s", err)
 	}
+
 	githubKey = os.Getenv("GITHUB_AUTH")
 }
 

@@ -1,19 +1,9 @@
 <!-- Commits Column -->
 <div class="col-span-2">
     <h1 class="font-semibold mb-4 text-xl">Commits</h1>
-    <div id="commitsList" class="border border-github-dark rounded-lg bg-github-dark">
-        {{ range $index, $rc := .RawCommits }}
-        <button 
-            hx-post="/fetch-dir" 
-            hx-target="#dir" 
-            hx-vals='{"url": "{{.URL}}"}' 
-            onClick="highlightCommit(this)"
-            class="commit-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark truncate {{ if eq $index 0 }}bg-github-dark-secondary{{end}}"
-        >
-            {{$rc.Commit.Message}}
-        </button>
-        {{end}}
-    </div>
+    <div id="commitsList">
+        {{ template "commit_list.html" . }}
+    </div>  
 </div>
 
 <!-- Current File -->

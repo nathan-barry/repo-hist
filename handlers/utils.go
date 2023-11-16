@@ -42,17 +42,17 @@ func getLastPageNumber(url string) (int, error) {
 	return lastPage, nil
 }
 
-func fetchLastCommits(url string, lastNum int) []*RawCommit {
-	lastURL := fmt.Sprintf("%s?page=%v", url, lastNum)
+func fetchCommits(url string, pageNum int) []*RawCommit {
+	pageURL := fmt.Sprintf("%s?page=%v", url, pageNum)
+	fmt.Println("Fetching commit from:", pageURL)
 
 	var commits []*RawCommit
-	getJSON(lastURL, &commits, githubKey)
+	getJSON(pageURL, &commits)
 
 	// reverse list
 	for i, j := 0, len(commits)-1; i < j; i, j = i+1, j-1 {
 		commits[i], commits[j] = commits[j], commits[i]
 	}
-
 	return commits
 }
 
@@ -100,38 +100,41 @@ func addChangedFileInfoToDir(changedFiles map[string]ChangeData, dir *Dir) {
 	}
 }
 
-func getBody(url string, key string) []byte {
+func getBody(url string) ([]byte, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	// If key isn't empty, add it to header
-	if key != "" {
-		req.Header.Set("Authorization", fmt.Sprintf("token %s", key))
+	if githubKey != "" {
+		req.Header.Set("Authorization", fmt.Sprintf("token %s", githubKey))
 	}
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	return body
+	return body, nil
 }
 
-func getJSON(url string, data any, key string) {
-	body := getBody(url, key)
-	if err := json.Unmarshal(body, &data); err != nil {
-		fmt.Println("GetJSON Error", err)
-		log.Fatal(err)
+func getJSON(url string, data any) error {
+	body, err := getBody(url)
+	if err != nil {
+		return err
 	}
+	if err := json.Unmarshal(body, &data); err != nil {
+		return err
+	}
+	return nil
 }
 
 // Helper to print after getJSON for debugging

@@ -1,7 +1,11 @@
 {{define "content"}}
 <div class="container px-8 py-8 text-github-dark max-w-full">
     <!-- Search Bar -->
-    <form hx-post="/fetch-repo" hx-target="#repo" class="mb-6">
+    <form hx-post="/fetch-commits"
+        hx-target="#repo"
+        hx-vals='{"initial_search": "true"}'
+        class="mb-6"
+    >
         <input value="a-h/templ" type="text" name="repoURL" placeholder="Enter user/repo" class="p-2 border rounded w-full border-github-dark bg-github-dark-secondary focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
     </form>
 

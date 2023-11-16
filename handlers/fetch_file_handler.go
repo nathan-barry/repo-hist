@@ -8,13 +8,18 @@ import (
 )
 
 func FetchFileHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("-> Fetch File Handler")
+
 	url := r.FormValue("url")
 	path := r.FormValue("path")
 	patch := r.FormValue("patch")
 
 	// Grabs content and changes of file
 	var content Content
-	getJSON(url, &content, githubKey)
+	if err := getJSON(url, &content); err != nil {
+		fmt.Println("getJSON error:", url)
+		return
+	}
 	decodedContent, _ := base64.StdEncoding.DecodeString(content.Content)
 	decodedPatch, _ := base64.StdEncoding.DecodeString(patch)
 
