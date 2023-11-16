@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/base64"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -8,6 +9,7 @@ import (
 
 func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("-> Fetch Dir Handler")
+
 	url := r.FormValue("url")
 
 	// Grabs the commit metadata
@@ -28,12 +30,29 @@ func FetchDirHandler(w http.ResponseWriter, r *http.Request) {
 	addChangedFileInfoToDir(changedFiles, &dir)
 	addDeletedFilesToDir(deletedFiles, &dir)
 
+	// Grabs content of first file
+	fileURL, patch, path := getFirstChangedFileInfo(dir)
+
+	var content Content
+	if err := getJSON(fileURL, &content); err != nil {
+		fmt.Println("getJSON error:", url)
+		fmt.Println(err)
+		return
+	}
+	decoded, _ := base64.StdEncoding.DecodeString(content.Content)
+
 	// Template stuff
-	t := template.Must(template.ParseFiles("./views/home/dir.html"))
+	t := template.Must(template.ParseFiles(
+		"./views/home/dir.html",
+		"./views/home/file.html",
+	))
 
 	data := map[string]any{
-		"Tree":         dir.Tree,
-		"InitialFetch": false,
+		"Tree": dir.Tree,
+		// "InitialFetch": false,
+		"File":  string(decoded),
+		"Path":  path,
+		"Patch": patch,
 	}
 
 	err := t.Execute(w, data)

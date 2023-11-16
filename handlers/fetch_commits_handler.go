@@ -67,21 +67,19 @@ func FetchCommitsHandler(w http.ResponseWriter, r *http.Request) {
 	addDeletedFilesToDir(deletedFiles, &dir)
 
 	// Grabs content of first file
-	firstFileURL := dir.Tree[0].URL
+	fileURL, patch, path := getFirstChangedFileInfo(dir)
 	var content Content
-	if err := getJSON(firstFileURL, &content); err != nil {
+	if err := getJSON(fileURL, &content); err != nil {
 		fmt.Println("getJSON error:", url)
 		return
 	}
 	decoded, _ := base64.StdEncoding.DecodeString(content.Content)
-	path := dir.Tree[0].Path
 
 	// Template stuff
 	t := template.Must(template.ParseFiles(
 		"./views/home/repo.html",
 		"./views/home/file.html",
 		"./views/home/dir.html",
-		"./views/home/commit_list.html",
 	))
 
 	data := map[string]any{
@@ -90,7 +88,7 @@ func FetchCommitsHandler(w http.ResponseWriter, r *http.Request) {
 		"InitialFetch":  true,
 		"File":          string(decoded),
 		"Path":          path,
-		"Patch":         commitData.Files[0].Patch,
+		"Patch":         patch,
 		"NumTotalPages": numTotalPages,
 		"NumCurPage":    numCurPage,
 		"URL":           url,

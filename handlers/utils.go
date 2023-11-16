@@ -56,6 +56,18 @@ func fetchCommits(url string, pageNum int) []*RawCommit {
 	return commits
 }
 
+func getFirstChangedFileInfo(dir Dir) (fileURL, patch, path string) {
+	for i := 0; i < len(dir.Tree); i++ {
+		if dir.Tree[i].Patch != "" {
+			fileURL = dir.Tree[i].URL
+			patch = dir.Tree[i].Patch
+			path = dir.Tree[i].Path
+			return
+		}
+	}
+	return
+}
+
 func processChangeFilesInfo(commitData CommitData) (map[string]ChangeData, []string) {
 	changedFiles := make(map[string]ChangeData, len(commitData.Files))
 	deletedFiles := []string{}

@@ -2,19 +2,50 @@
 <div class="col-span-2">
     <h1 class="font-semibold mb-4 text-xl">Commits</h1>
     <div id="commitsList">
-        {{ template "commit_list.html" . }}
+        <div class="border border-github-dark rounded-lg bg-github-dark">
+            {{ range $index, $rc := .RawCommits }}
+            <button 
+                hx-post="/fetch-dir" 
+                hx-target="#dir-file-cols" 
+                hx-vals='{"url": "{{.URL}}"}' 
+                onClick="highlightCommit(this)"
+                class="commit-button block p-3 w-full text-left hover:bg-github-dark-secondary border-b border-github-dark truncate {{ if eq $index 0 }}bg-github-dark-secondary{{end}}"
+            >
+                {{$rc.Commit.Message}}
+            </button>
+            {{end}}
+        </div>
+        <p class="p-3">Page {{ .NumCurPage }}/{{ .NumTotalPages }}</p>
+        <div class="flex">
+            {{ if gt .NumCurPage 1}}
+                <button 
+                    hx-post="/fetch-commits" 
+                    hx-target="#repo" 
+                    hx-vals='{
+                        "url": "{{.URL}}",
+                        "action": "prev",
+                        "num_cur_page": "{{.NumCurPage}}",
+                        "num_total_pages": "{{.NumTotalPages}}"
+                        }' 
+                    class="block px-3 py-1 text-left hover:bg-github-dark-secondary rounded border border-github-dark">Prev</button>
+            {{end}}
+            {{ if lt .NumCurPage .NumTotalPages }}
+                <button 
+                    hx-post="/fetch-commits" 
+                    hx-target="#repo" 
+                    hx-vals='{
+                        "url": "{{.URL}}",
+                        "action": "next",
+                        "num_cur_page": "{{.NumCurPage}}",
+                        "num_total_pages": "{{.NumTotalPages}}"
+                        }' 
+                    class="block px-3 py-1 text-left hover:bg-github-dark-secondary rounded border border-github-dark">Next</button>
+            {{end}}
+        </div>
     </div>  
 </div>
 
-<!-- Current File -->
-<div id="file" class="col-span-8 overflow-x-auto">
-    {{ template "file.html" . }}
-</div>
-
-<!-- Files Column -->
-<div class="col-span-2">
-    <h1 class="font-semibold mb-4 text-xl">Files</h1>
-    <div id="dir" class="border border-github-dark rounded-lg bg-github-dark">
-        {{ template "dir.html" . }}
-    </div>
+<!-- Dir and File Columns -->
+<div id="dir-file-cols" class="col-span-10 grid grid-cols-10 gap-4">
+    {{ template "dir.html" . }}
 </div>
