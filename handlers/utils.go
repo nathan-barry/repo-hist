@@ -60,7 +60,8 @@ func getFirstChangedFileInfo(dir Dir) (fileURL, patch, path string) {
 	for i := 0; i < len(dir.Tree); i++ {
 		if dir.Tree[i].Patch != "" {
 			fileURL = dir.Tree[i].URL
-			patch = dir.Tree[i].Patch
+			decodedPatch, _ := base64.StdEncoding.DecodeString(dir.Tree[i].Patch)
+			patch = string(decodedPatch)
 			path = dir.Tree[i].Path
 			return
 		}
