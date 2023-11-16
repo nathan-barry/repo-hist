@@ -1,6 +1,6 @@
 # repo-hist
 
-![Repo History Overview](/static/repo-hist-hero.png)
+![Repo History Overview](/static/repo-hist-hero.webp)
 
 [repohist.com](https://repohist.com/)
 
